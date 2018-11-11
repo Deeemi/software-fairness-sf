@@ -1,0 +1,11 @@
+Loan_ID
+loan_status
+Principal
+terms
+effective_date
+due_date
+paid_off_time
+past_due_days
+age
+education
+Gender

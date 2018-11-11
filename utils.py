@@ -1,7 +1,7 @@
 import csv
 import pandas as pd
 
-def inputReader(inputCsv):
+'''def input_reader(inputCsv):
     with open(inputCsv, 'rb') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',')
         inputRead = []
@@ -9,7 +9,7 @@ def inputReader(inputCsv):
             inputRead.append(row)
     return inputRead
 
-def defineDict(inputData):
+def define_dict(inputData):
     file = open(inputData)
     lines = file.readlines()
     dictionary = []
@@ -17,15 +17,15 @@ def defineDict(inputData):
         i = i.replace('\n', '')
         dictionary.append(i)
     return dictionary
-
-def buildDict(keys, values):
+'''
+def build_dict(keys, values):
     dictionary = []
     for value in values:
         dictionary.append(dict(zip(keys, value)))
     return dictionary
 
 def build(keys, values):
-    return buildDict(keys, values)
+    return build_dict(keys, values)
 
 def field_filter(dictionary, field, attribute):
     return [i for i in dictionary if i[field] == attribute]
@@ -39,7 +39,7 @@ def find_field_attribute(field, dictionary):
     obj = {field: set(tmp)}
     return obj
 
-def columnReader(fileName):
+def column_reader(fileName):
     file = open(fileName)
     lines = file.readlines()
     dictionary = []
@@ -51,7 +51,7 @@ def columnReader(fileName):
 '''input: csvFile = path al file csv che contiene i dati da mappare
           headingFile = path al file txt che contiene il nome dei campi del file csv'''
 def field_mapping(csvFile, headingFile):
-    fields = columnReader(headingFile)
+    fields = column_reader(headingFile)
     df = pd.read_csv(csvFile, skipinitialspace=True, usecols=fields)
     mapped_fields = []
     obj = {}
@@ -65,7 +65,7 @@ def field_mapping(csvFile, headingFile):
 
 
 def data_transofmation(inputHeading, inputCsv):
-    fields = columnReader(inputHeading)
+    fields = column_reader(inputHeading)
     df = pd.read_csv(inputCsv, skipinitialspace=True, usecols=fields)
     mappedFields = field_mapping(inputCsv, inputHeading)
     for column in df:
@@ -77,5 +77,7 @@ def data_transofmation(inputHeading, inputCsv):
                             df.loc[df[column] == element, column] = list(i.keys())[list(i.values()).index(element)]
     return df
 
-
+df = data_transofmation('./file/inputHeading_loan.txt', './file/Loan_payments_data.csv')
+correlation = df.corr('pearson')
+print(correlation)
                         
