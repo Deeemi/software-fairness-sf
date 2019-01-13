@@ -76,7 +76,28 @@ def find_dag(datafame, field, fields):
     return returnVal
 
 
-datas = data_transofmation('./file/inputHeading.txt','./file/input_long.csv' )
+inputCsv = "./file/input.csv"
+fields = column_reader("./file/inputHeading.txt")
+df = pd.read_csv(inputCsv, skipinitialspace=True, usecols=fields)
+
+max_crosstab = {}
+made = []
+for i in fields:
+    max_contingency = 0
+    for j in fields:
+        if i !=j:
+            tmp = pd.crosstab(df[i], df[j])
+            max_crosstab = dict({"field_1": i, "field_2": j, "contingency": 0})
+            max_contingency = tmp.max(axis = 0)
+            max_crosstab["contingency"] = tmp
+
+print(max_crosstab)
+
+
+'''tmp = pd.crosstab(df["result"], df["race"])
+massimo = tmp.max(axis = 0).max(axis = 0)
+print(massimo)'''
+'''datas = data_transofmation('./file/inputHeading.txt','./file/input_long.csv' )
 print("Start analizing the dataset...")
 
 print('-----PEARSON-----')
@@ -113,6 +134,8 @@ print("Finish!")
 print("The casual dag computet using correlation is: ")
 print(result_string)
 
+
+
 print('-----KENDALL-----')
 datas = data_transofmation('./file/inputHeading.txt','./file/input_long.csv' )
 print("Start analizing the dataset...")
@@ -148,3 +171,4 @@ result_string = result_string.replace("-->", "", 1)
 print("Finish!")
 print("The casual dag computet using correlation is: ")
 print(result_string)
+'''
