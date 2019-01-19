@@ -82,17 +82,28 @@ df = pd.read_csv(inputCsv, skipinitialspace=True, usecols=fields)
 
 max_crosstab = {}
 made = []
-for i in fields:
+mapping = []
+for field in fields:
+    if field != "result":
+        tmp = pd.crosstab(df['result'],df[field])
+        print(tmp)
+        somma = tmp.sum(axis = 0)
+        for a in tmp:
+            for b in tmp.index:
+                mapping.append({"field2": "result", "field1": field, "value1": a, "value2": b, "total": tmp[a][b], "count": tmp[a][b]/somma[a]})
+print(mapping)
+
+'''for i in fields:
     max_contingency = 0
     for j in fields:
         if i !=j:
             tmp = pd.crosstab(df[i], df[j])
-            max_crosstab = dict({"field_1": i, "field_2": j, "contingency": 0})
-            max_contingency = tmp.max(axis = 0)
-            max_crosstab["contingency"] = tmp
+            max_crosstab = dict({"field_1": i, "value_1": "", "field_2": j, "value_2": "", "contingency": 0})
+            max_contingency = tmp.max()
+            max_crosstab["contingency"] = max_contingency
 
-print(max_crosstab)
-
+    print(max_crosstab)
+'''
 
 '''tmp = pd.crosstab(df["result"], df["race"])
 massimo = tmp.max(axis = 0).max(axis = 0)
