@@ -1,6 +1,9 @@
 import csv
 import pandas as pd
 import numpy as numpy
+import requests
+
+pd.options.mode.chained_assignment = None
 
 def build_dict(keys, values):
     dictionary = []
@@ -76,22 +79,73 @@ def find_dag(datafame, field, fields):
     return returnVal
 
 
-inputCsv = "./file/input.csv"
+def find_dependencies(df, first_field, fields, value):
+    df_in = df.loc[df[first_field] == value]
+    mapping = []
+    max = 0
+    return_value = {}
+    for field in fields:
+        if field != first_field:
+            tmp = pd.crosstab(df_in[first_field],df_in[field])
+            somma = tmp.sum(axis = 0)
+            for b in tmp:
+                for a in tmp.index:
+                    if tmp[b][a]*len(df_in[field].unique()) == max and max != 0:
+                        print(return_value["field2"] + " e " +field+ " sono uguali")
+                    if tmp[b][a]*len(df_in[field].unique())>max:
+                        max = tmp[b][a]*len(df_in[field].unique())
+                        return_value = {"field2": field, "field1": first_field, "value1": a, "value2": b, "total": tmp[b][a], "count": tmp[b][a]*len(df_in[field].unique())}
+                    '''mapping.append({"field2": "result", "field1": field, "value1": a, "value2": b, "total": tmp[a][b], "count": tmp[a][b]/somma[a]})'''
+    return return_value
+    '''return find_dependencies(df.drop(field, axis=1, inplace = True), return_value["field2"], fields)'''
+
+
+inputCsv = "./file/input_long.csv"
 fields = column_reader("./file/inputHeading.txt")
 df = pd.read_csv(inputCsv, skipinitialspace=True, usecols=fields)
+dag = []
+current_field = ""
+df_in = df.loc[df['result'] == '<=50K']
+node = find_dependencies(df_in, 'result', fields, '<=50K')
+dag.append(node)
+df_in.drop('result', axis=1, inplace = True)
+current_field = node["field2"]
+value = node["value2"]
+fields.remove('result')
+df_in = df_in.loc[df_in[node["field2"]] == node["value2"]]
 
-max_crosstab = {}
-made = []
-mapping = []
-for field in fields:
-    if field != "result":
-        tmp = pd.crosstab(df['result'],df[field])
-        print(tmp)
-        somma = tmp.sum(axis = 0)
-        for a in tmp:
-            for b in tmp.index:
-                mapping.append({"field2": "result", "field1": field, "value1": a, "value2": b, "total": tmp[a][b], "count": tmp[a][b]/somma[a]})
-print(mapping)
+i = len(fields)
+
+while i>=2:
+    node = find_dependencies(df_in, current_field, fields, value)
+    dag.append(node)
+    df_in.drop(node["field1"], axis=1, inplace = True)
+    df_in = df_in.loc[df_in[node["field2"]] == node["value2"]]
+    current_field = node["field2"]
+    value = node["value2"]
+    fields.remove(node["field1"])
+    i = i-1
+
+    if(bool(node) == False):
+        break
+
+first = True
+result_string = ""
+for c in dag:
+    if first == True:
+        result_string = c["field1"]
+        first = False
+    else:
+        result_string = result_string + "--->" + c["field1"]
+        last = c["field2"]
+
+result_string = result_string + "--->" + last
+print(result_string)
+    
+
+
+
+
 
 '''for i in fields:
     max_contingency = 0
