@@ -91,7 +91,7 @@ def find_dependencies(df, first_field, fields, value):
             for b in tmp:
                 for a in tmp.index:
                     if tmp[b][a]*len(df_in[field].unique()) == max and max != 0:
-                        print(return_value["field2"] + " e " +field+ " sono uguali")
+                        '''print(return_value["field2"] + " e " +field+ " sono uguali")'''
                     if tmp[b][a]*len(df_in[field].unique())>max:
                         max = tmp[b][a]*len(df_in[field].unique())
                         return_value = {"field2": field, "field1": first_field, "value1": a, "value2": b, "total": tmp[b][a], "count": tmp[b][a]*len(df_in[field].unique())}
@@ -128,18 +128,27 @@ while i>=2:
 
     if(bool(node) == False):
         break
+new_count = 0
+
+for j in dag:
+    new_count = j["count"]/len(df[j["field2"]].unique())/len(df.index)
+    conditional_prob = df.groupby(["result"])[j["field2"]].value_counts() / df.groupby(["result"])[j["field2"]].count()
+    j["count"] = new_count
+    j["odds-ratio"] = (conditional_prob.loc["<=50K"][j["value2"]]/(1- conditional_prob.loc["<=50K"][j["value2"]]))/(conditional_prob.loc[">50K"][j["value2"]]/(1- conditional_prob.loc[">50K"][j["value2"]]))
+    print(j)
+    print("-----")
 
 first = True
 result_string = ""
 for c in dag:
     if first == True:
-        result_string = c["field1"]
+        result_string = c["field1"]+": "+ str(c["value1"])
         first = False
     else:
-        result_string = result_string + "--->" + c["field1"]
-        last = c["field2"]
+        result_string = result_string + "--->" + c["field1"]+": "+ str(c["value1"]) 
+        last = c 
 
-result_string = result_string + "--->" + last
+result_string = result_string + "--->" + last["field1"]+": "+ str(last["value1"]) 
 print(result_string)
     
 
