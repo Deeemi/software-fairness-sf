@@ -143,10 +143,6 @@ result_string = result_string + "--->" + last
 print(result_string)
     
 
-
-
-
-
 '''for i in fields:
     max_contingency = 0
     for j in fields:
