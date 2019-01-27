@@ -150,95 +150,27 @@ for c in dag:
 
 result_string = result_string + "--->" + last["field1"]+": "+ str(last["value1"]) 
 print(result_string)
-    
 
-'''for i in fields:
-    max_contingency = 0
-    for j in fields:
-        if i !=j:
-            tmp = pd.crosstab(df[i], df[j])
-            max_crosstab = dict({"field_1": i, "value_1": "", "field_2": j, "value_2": "", "contingency": 0})
-            max_contingency = tmp.max()
-            max_crosstab["contingency"] = max_contingency
 
-    print(max_crosstab)
-'''
+'''NEXT LINES ARE WORK IN PROGRESS'''
+fields = column_reader('./file/inputHeading.txt')
+correlation_datas = pd.read_csv('./file/input_long.csv', skipinitialspace=True, usecols=fields)
 
-'''tmp = pd.crosstab(df["result"], df["race"])
-massimo = tmp.max(axis = 0).max(axis = 0)
-print(massimo)'''
-'''datas = data_transofmation('./file/inputHeading.txt','./file/input_long.csv' )
 print("Start analizing the dataset...")
 
 print('-----PEARSON-----')
-correlation = datas.corr('pearson')
-fields = []
-for field in correlation:
-    fields.append(field)
-casual_dag = []
-
-first_node = find_dag(correlation, "result", fields)
-casual_dag.append(first_node["field_1"])
-field = first_node["field_2"]
-datas.drop("result", axis = 1, inplace=True)
-fields.remove("result")
-i = len(fields)
-
-while len(fields)>=2: 
-    correlation = datas.corr('kendall')
-    node = find_dag(correlation, field, fields)
-    casual_dag.append(node["field_1"])
-    field = node["field_2"]
-    datas.drop(node["field_1"], axis = 1, inplace=True)
-    fields.remove(node["field_1"])
-
-casual_dag.append(fields[0])
-result_string = ""
-
-for i in casual_dag:
-    result_string = result_string + "-->" + i
-
-result_string = result_string.replace("-->", "", 1)
-
-print("Finish!")
-print("The casual dag computet using correlation is: ")
-print(result_string)
-
-
-
-print('-----KENDALL-----')
-datas = data_transofmation('./file/inputHeading.txt','./file/input_long.csv' )
-print("Start analizing the dataset...")
-correlation = datas.corr('kendall')
-fields = []
-for field in correlation:
-    fields.append(field)
-casual_dag = []
-
-first_node = find_dag(correlation, "result", fields)
-casual_dag.append(first_node["field_1"])
-field = first_node["field_2"]
-datas.drop("result", axis = 1, inplace=True)
-fields.remove("result")
-i = len(fields)
-
-while len(fields)>=2: 
-    correlation = datas.corr('kendall')
-    node = find_dag(correlation, field, fields)
-    casual_dag.append(node["field_1"])
-    field = node["field_2"]
-    datas.drop(node["field_1"], axis = 1, inplace=True)
-    fields.remove(node["field_1"])
-
-casual_dag.append(fields[0])
-result_string = ""
-
-for i in casual_dag:
-    result_string = result_string + "-->" + i
-
-result_string = result_string.replace("-->", "", 1)
-
-print("Finish!")
-print("The casual dag computet using correlation is: ")
-print(result_string)
-'''
+pearson_correlation = correlation_datas.corr('pearson')
+for i in pearson_correlation:
+    max = -1
+    print("-----")
+    tmp = pearson_correlation[i]
+    for j in pearson_correlation[i]:
+        if(j == 1):
+            j = 0
+            tmp[i] = 0
+        if (j>max):
+            max_row = str(tmp[i])
+            max = j
+    print(tmp)
+    print("-----")
+    print(max_row)
