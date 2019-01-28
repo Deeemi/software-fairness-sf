@@ -2,6 +2,7 @@ import csv
 import pandas as pd
 import numpy as numpy
 import requests
+from operator import itemgetter
 
 pd.options.mode.chained_assignment = None
 
@@ -100,13 +101,16 @@ def find_dependencies(df, first_field, fields, value):
     '''return find_dependencies(df.drop(field, axis=1, inplace = True), return_value["field2"], fields)'''
 
 
-inputCsv = "./file/input_long.csv"
-fields = column_reader("./file/inputHeading.txt")
+inputCsv = "./file/german.csv"
+fields = column_reader("./file/german_heading.txt")
+print (fields)
 df = pd.read_csv(inputCsv, skipinitialspace=True, usecols=fields)
 dag = []
 current_field = ""
-df_in = df.loc[df['result'] == '<=50K']
-node = find_dependencies(df_in, 'result', fields, '<=50K')
+df_in = df.loc[df['result'] == 'bad'] 
+'''DA RIMETTERE <=50K'''
+node = find_dependencies(df_in, 'result', fields, 'bad') 
+'''DA RIMETTERE<=50K'''
 dag.append(node)
 df_in.drop('result', axis=1, inplace = True)
 current_field = node["field2"]
@@ -134,25 +138,43 @@ for j in dag:
     new_count = j["count"]/len(df[j["field2"]].unique())/len(df.index)
     conditional_prob = df.groupby(["result"])[j["field2"]].value_counts() / df.groupby(["result"])[j["field2"]].count()
     j["count"] = new_count
-    j["odds-ratio"] = (conditional_prob.loc["<=50K"][j["value2"]]/(1- conditional_prob.loc["<=50K"][j["value2"]]))/(conditional_prob.loc[">50K"][j["value2"]]/(1- conditional_prob.loc[">50K"][j["value2"]]))
-    print(j)
-    print("-----")
+    j["odds-ratio"] = (conditional_prob.loc["bad"][j["value2"]]/(1- conditional_prob.loc["bad"][j["value2"]]))/(conditional_prob.loc["good"][j["value2"]]/(1- conditional_prob.loc["good"][j["value2"]]))
 
 first = True
 result_string = ""
+for x in dag:
+    x["ce_coefficient"] = x["count"]*x["odds-ratio"]
+
+print("---BEFORE USING CE_COEFFICIENT---")
 for c in dag:
     if first == True:
         result_string = c["field1"]+": "+ str(c["value1"])
         first = False
     else:
-        result_string = result_string + "--->" + c["field1"]+": "+ str(c["value1"]) 
+        result_string = result_string + "--->" + c["field1"]+": "+ str(c["value1"])
         last = c 
 
-result_string = result_string + "--->" + last["field1"]+": "+ str(last["value1"]) 
+
+print(result_string)
+
+first = True
+result_string = ""
+new_dag = sorted(dag, key=itemgetter('ce_coefficient'), reverse=True)
+dag = new_dag
+
+for c in dag:
+    if first == True:
+        result_string = c["field1"]+": "+ str(c["value1"]) +", ce_coefficient: " +str(c["ce_coefficient"])
+        first = False
+    else:
+        result_string = result_string + "--->" + c["field1"]+": "+ str(c["value1"]) +", ce_coefficient: "+str(c["ce_coefficient"])
+        last = c 
+
+print("---AFTER USING CE_COEFFICIENT---")
 print(result_string)
 
 
-'''NEXT LINES ARE WORK IN PROGRESS'''
+'''NEXT LINES ARE WORK IN PROGRESS
 fields = column_reader('./file/inputHeading.txt')
 correlation_datas = pd.read_csv('./file/input_long.csv', skipinitialspace=True, usecols=fields)
 
@@ -173,4 +195,4 @@ for i in pearson_correlation:
             max = j
     print(tmp)
     print("-----")
-    print(max_row)
+    print(max_row)'''
