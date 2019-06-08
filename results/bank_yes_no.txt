@@ -1,0 +1,30 @@
+1. Your datas are in :
+./file/bank/input.csv
+2. The field that you want to analize is:
+result
+3. The value for the field result that you want to use as a root of the analysis is:
+yes
+4. The other value that you want to use to compare result is:
+no
+------------
+---BEFORE USING CE_COEFFICIENT---
+result: yes--->pdays: -1--->balance: 0--->campaign: 1--->job: management--->education: tertiary--->marital: married--->contact: cellular--->month: apr--->loan: no--->age: 33--->default: no--->housing: yes--->day: 17--->duration: 378--->previous: 0--->poutcome: unknown
+---AFTER USING CE_COEFFICIENT---
+result: yes, ce_coefficient: 0.0190374740034--->pdays: -1, ce_coefficient: 0.0190374740034--->balance: 0, ce_coefficient: 0.000839568716206--->campaign: 1, ce_coefficient: 0.000767568816113--->job: management, ce_coefficient: 0.000477689123091--->contact: cellular, ce_coefficient: 0.000442827684624--->education: tertiary, ce_coefficient: 0.000356342423271--->marital: married, ce_coefficient: 0.000152028824808--->loan: no, ce_coefficient: 8.95240856195e-05--->month: apr, ce_coefficient: 5.4007246359e-05--->default: no, ce_coefficient: 2.17019154294e-05--->housing: yes, ce_coefficient: 4.60116155496e-06--->poutcome: unknown, ce_coefficient: 1.86062665241e-06--->day: 17, ce_coefficient: 5.31588700381e-07--->age: 33, ce_coefficient: 5.14444704675e-07--->previous: 0, ce_coefficient: 1.81328701981e-07--->duration: 378, ce_coefficient: 1.9907277114e-08
+COMPARING pdays WITH balance
+COMPARING balance WITH campaign
+COMPARING campaign WITH job
+COMPARING job WITH contact
+COMPARING contact WITH education
+COMPARING education WITH marital
+COMPARING marital WITH loan
+COMPARING loan WITH month
+COMPARING month WITH default
+COMPARING default WITH housing
+COMPARING housing WITH poutcome
+COMPARING poutcome WITH day
+COMPARING day WITH age
+COMPARING age WITH previous
+COMPARING previous WITH duration
+---CALCULATING SUPER NODES---
+[['balance'], ['campaign'], ['job'], ['contact'], ['education', 'marital'], ['loan'], ['month', 'default', 'housing', 'poutcome', 'day']]

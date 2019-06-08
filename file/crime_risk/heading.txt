@@ -1,0 +1,11 @@
+Agency_Text
+Sex_Code_Text
+Ethnic_Code_Text
+ScaleSet
+AssessmentReason
+Language
+LegalStatus
+CustodyStatus
+MaritalStatus
+DisplayText
+ScoreText

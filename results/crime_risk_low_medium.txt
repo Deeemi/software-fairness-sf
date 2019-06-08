@@ -1,0 +1,28 @@
+------Let's resume your input data:------
+1. Your datas are in :
+./file/crime_risk/input.csv
+2. The field that you want to analize is:
+ScoreText
+3. The value for the field ScoreText that you want to use as a root of the analysis is:
+Low
+4. The other value that you want to use to compare ScoreText is:
+Medium
+------------
+---BEFORE USING CE_COEFFICIENT---
+ScoreText: Low--->MaritalStatus: Single--->Ethnic_Code_Text: African-American--->LegalStatus: Pretrial-
+-->CustodyStatus: Jail Inmate--->Agency_Text: PRETRIAL--->Sex_Code_Text: Male--->DisplayText: Risk of F
+ailure to Appear--->ScaleSet: Risk and Prescreen--->AssessmentReason: Intake--->Language: English
+---AFTER USING CE_COEFFICIENT---
+ScoreText: Low, ce_coefficient: 0.148528573539--->MaritalStatus: Single, ce_coefficient: 0.148528573539
+--->Ethnic_Code_Text: African-American, ce_coefficient: 0.10298058858--->Sex_Code_Text: Male, ce_coefficient: 0.084696525871--->LegalStatus: Pretrial, ce_coefficient: 0.0836156943117--->DisplayText: Risk of Failure to Appear, ce_coefficient: 0.0784478391773--->CustodyStatus: Jail Inmate, ce_coefficient: 0.0695368715053--->Agency_Text: PRETRIAL, ce_coefficient: 0.0648255749812--->ScaleSet: Risk and Prescreen, ce_coefficient: 0.0359417787832--->AssessmentReason: Intake, ce_coefficient: nan--->Language: English, ce_coefficient: 0.00441189902599
+COMPARING MaritalStatus WITH Ethnic_Code_Text
+COMPARING Ethnic_Code_Text WITH Sex_Code_Text
+COMPARING Sex_Code_Text WITH LegalStatus
+COMPARING LegalStatus WITH DisplayText
+COMPARING DisplayText WITH CustodyStatus
+COMPARING CustodyStatus WITH Agency_Text
+COMPARING Agency_Text WITH ScaleSet
+COMPARING ScaleSet WITH AssessmentReason
+COMPARING AssessmentReason WITH Language
+---CALCULATING SUPER NODES---
+[[], ['Ethnic_Code_Text'], ['Sex_Code_Text'], ['LegalStatus'], ['DisplayText'], ['CustodyStatus'], ['Agency_Text']]

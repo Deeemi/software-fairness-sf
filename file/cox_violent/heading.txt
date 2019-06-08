@@ -1,0 +1,8 @@
+sex
+age_cat
+race
+c_charge_desc
+r_charge_desc
+is_violent_recid
+type_of_assessment
+score_text

@@ -1,0 +1,56 @@
+------Let's resume your input data:------
+1. Your datas are in :
+./file/census/input.csv
+2. The field that you want to analize is:
+result
+3. The value for the field result that you want to use as a root of the analysis is:
+0
+4. The other value that you want to use to compare result is:
+1
+------------
+---BEFORE USING CE_COEFFICIENT---
+result: 0--->divdends_from_stocks: 0--->adjust_gross_income: 0--->capital_gains: 0--->capital_losses: 0
+--->region_of_previous_residence: Not_in_universe--->country_of_birth_self: United-States--->country_of
+_birth_mother: United-States--->country_of_birth_father: United-States--->weeks_worked_in_year: 52--->h
+ispanic_Origin: All_other--->education: High_school_graduate--->class_of_worker: Private--->reason_for_
+unemployment: Not_in_universe--->marital_status: Married-civilian_spouse_present--->federal_income_tax_liability: Joint_both_under_65--->full_or_part_time_employment_stat: Full-time_schedules--->major_occupation_code: Adm_support_including_clerical--->major_industry_code: Finance_insurance_and_real_estate--->sex: Female--->total_person_income: 0--->detailed_household_and_family_stat: Spouse_of_householder--->family_members_under_18: 1--->age: 47--->wage_per_hour: Not_in_universe--->race: White--->member_of_a_labor_union: Not_in_universe--->tax_filer_status: Not_in_universe--->instance_weight: ?--->migration_code-change_in_msa: ?--->migration_code-change_in_reg: ?--->migration_code-move_within_reg: Not_in_universe_under_1_year_old--->live_in_this_house_1_year_ago: ?--->migration_prev_res_in_sunbelt: Not_in_universe--->citizenship: Native-_Born_in_the_United_States--->own_business_or_self_employed: Not_in_universe--->taxable_income_amount: 2--->veterans_benefits: 95
+---AFTER USING CE_COEFFICIENT---
+result: 0, ce_coefficient: 4.57526420618--->divdends_from_stocks: 0, ce_coefficient: 4.57526420618--->capital_gains: 0, ce_coefficient: 3.4340479347--->capital_losses: 0, ce_coefficient: 2.55239659603--->country_of_birth_self: United-States, ce_coefficient: 0.457444975174--->region_of_previous_residence: Not_in_universe, ce_coefficient: 0.351247080599--->country_of_birth_mother: United-States, ce_coefficient: 0.340570606326--->adjust_gross_income: 0, ce_coefficient: 0.329178691408--->education: High_school_graduate, ce_coefficient: 0.234878066358--->country_of_birth_father: United-States, ce_coefficient: 0.217004327079--->hispanic_Origin: All_other, ce_coefficient: 0.0651991986597--->class_of_worker: Private, ce_coefficient: 0.0243705923606--->weeks_worked_in_year: 52, ce_coefficient: 0.0235487184804--->reason_for_unemployment: Not_in_universe, ce_coefficient: 0.0141716100039--->major_occupation_code: Adm_support_including_clerical, ce_coefficient: 0.0128283278267--->marital_status: Married-civilian_spouse_present, ce_coefficient: 0.0107669319425--->full_or_part_time_employment_stat: Full-time_schedules, ce_coefficient: 0.00682911621888--->federal_income_tax_liability: Joint_both_under_65, ce_coefficient: 0.00590166061801--->sex: Female, ce_coefficient: 0.00421065130006--->total_person_income: 0, ce_coefficient: 0.000540483477903--->major_industry_code: Finance_insurance_and_real_estate, ce_coefficient: 0.000227637657687--->detailed_household_and_family_stat: Spouse_of_householder, ce_coefficient: 0.000177956774159--->family_members_under_18: 1, ce_coefficient: 8.55389558061e-05--->taxable_income_amount: 2, ce_coefficient: 4.98946748113e-05--->veterans_benefits: 95, ce_coefficient: 4.14355501847e-05--->member_of_a_labor_union: Not_in_universe, ce_coefficient: 4.0741877457e-05--->own_business_or_self_employed: Not_in_universe, ce_coefficient: 3.32631165409e-05--->migration_code-move_within_reg: Not_in_universe_under_1_year_old, ce_coefficient: 2.76237001232e-05--->live_in_this_house_1_year_ago: ?, ce_coefficient: 2.07177750924e-05--->citizenship: Native-_Born_in_the_United_States, ce_coefficient: 1.38326270086e-05--->migration_code-change_in_msa: ?, ce_coefficient: 1.03588875462e-05--->race: White, ce_coefficient: 9.85002620372e-06--->instance_weight: ?, ce_coefficient: 9.20790004106e-06--->migration_code-change_in_reg: ?, ce_coefficient: 9.20790004106e-06--->tax_filer_status: Not_in_universe, ce_coefficient: 7.55272611273e-06--->age: 47, ce_coefficient: 9.01549038074e-07--->wage_per_hour: Not_in_universe, ce_coefficient: 0.0--->migration_prev_res_in_sunbelt: Not_in_universe, ce_coefficient: 0.0
+COMPARING divdends_from_stocks WITH capital_gains
+COMPARING capital_gains WITH capital_losses
+COMPARING capital_losses WITH country_of_birth_self
+COMPARING country_of_birth_self WITH region_of_previous_residence
+COMPARING region_of_previous_residence WITH country_of_birth_mother
+COMPARING country_of_birth_mother WITH adjust_gross_income
+COMPARING adjust_gross_income WITH education
+COMPARING education WITH country_of_birth_father
+COMPARING country_of_birth_father WITH hispanic_Origin
+COMPARING hispanic_Origin WITH class_of_worker
+COMPARING class_of_worker WITH weeks_worked_in_year
+COMPARING weeks_worked_in_year WITH reason_for_unemployment
+COMPARING reason_for_unemployment WITH major_occupation_code
+COMPARING major_occupation_code WITH marital_status
+COMPARING marital_status WITH full_or_part_time_employment_stat
+COMPARING full_or_part_time_employment_stat WITH federal_income_tax_liability
+COMPARING federal_income_tax_liability WITH sex
+COMPARING sex WITH total_person_income
+COMPARING total_person_income WITH major_industry_code
+COMPARING major_industry_code WITH detailed_household_and_family_stat
+COMPARING detailed_household_and_family_stat WITH family_members_under_18
+COMPARING family_members_under_18 WITH taxable_income_amount
+COMPARING taxable_income_amount WITH veterans_benefits
+COMPARING veterans_benefits WITH member_of_a_labor_union
+COMPARING member_of_a_labor_union WITH own_business_or_self_employed
+COMPARING own_business_or_self_employed WITH migration_code-move_within_reg
+COMPARING migration_code-move_within_reg WITH live_in_this_house_1_year_ago
+COMPARING live_in_this_house_1_year_ago WITH citizenship
+COMPARING citizenship WITH migration_code-change_in_msa
+COMPARING migration_code-change_in_msa WITH race
+COMPARING race WITH instance_weight
+COMPARING instance_weight WITH migration_code-change_in_reg
+COMPARING migration_code-change_in_reg WITH tax_filer_status
+COMPARING tax_filer_status WITH age
+COMPARING age WITH wage_per_hour
+COMPARING wage_per_hour WITH migration_prev_res_in_sunbelt
+---CALCULATING SUPER NODES---
+[[], ['capital_gains'], ['capital_losses', 'country_of_birth_self'], ['region_of_previous_residence'], ['country_of_birth_mother'], ['adjust_gross_income'], ['education'], ['country_of_birth_father', 'hispanic_Origin', 'class_of_worker'], ['weeks_worked_in_year'], ['reason_for_unemployment'], ['major_occupation_code'], ['marital_status'], ['full_or_part_time_employment_stat'], ['federal_income_tax_liability'], ['sex', 'total_person_income', 'major_industry_code'], ['detailed_household_and_family_stat', 'family_members_under_18'], ['taxable_income_amount'], ['veterans_benefits'], ['member_of_a_labor_union'], ['own_business_or_self_employed'], ['migration_code-move_within_reg'], ['live_in_this_house_1_year_ago'], ['citizenship'], ['migration_code-change_in_msa'], ['race'], ['instance_weight'], ['migration_code-change_in_reg']]

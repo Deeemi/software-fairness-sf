@@ -1,0 +1,31 @@
+------Let's resume your input data:------
+1. Your datas are in :
+./file/bank/input.csv
+2. The field that you want to analize is:
+result
+3. The value for the field result that you want to use as a root of the analysis is:
+no
+4. The other value that you want to use to compare result is:
+yes
+------------
+---BEFORE USING CE_COEFFICIENT---
+result: no--->balance: 0--->pdays: -1--->campaign: 1--->duration: 71--->age: 38--->job: technician--->marital: married--->education: secondary--->default: no--->housing: yes--->loan: no--->contact: cellular--->day: 4--->month: aug--->previous: 0--->poutcome: unknown
+---AFTER USING CE_COEFFICIENT---
+result: no, ce_coefficient: 0.102215306718--->balance: 0, ce_coefficient: 0.102215306718--->pdays: -1, ce_coefficient: 0.0705626674054--->campaign: 1, ce_coefficient: 0.0100323688403--->duration: 71, ce_coefficient: 0.000282364845473--->housing: yes, ce_coefficient: 2.65817947387e-05--->marital: married, ce_coefficient: 2.14533232397e-05--->poutcome: unknown, ce_coefficient: 1.64335940065e-05--->job: technician, ce_coefficient: 7.95594311338e-06--->age: 38, ce_coefficient: 7.3816167648e-06--->education: secondary, ce_coefficient: 6.93638275134e-06--->default: no, ce_coefficient: 5.63577590243e-06--->loan: no, ce_coefficient: 5.46476989593e-06--->contact: cellular, ce_coefficient: 2.57782715887e-06--->month: aug, ce_coefficient: 1.9940867043e-06--->previous: 0, ce_coefficient: 1.6050091317e-06--->day: 4, ce_coefficient: 4.92626535924e-07
+COMPARING balance WITH pdays
+COMPARING pdays WITH campaign
+COMPARING campaign WITH duration
+COMPARING duration WITH housing
+COMPARING housing WITH marital
+COMPARING marital WITH poutcome
+COMPARING poutcome WITH job
+COMPARING job WITH age
+COMPARING age WITH education
+COMPARING education WITH default
+COMPARING default WITH loan
+COMPARING loan WITH contact
+COMPARING contact WITH month
+COMPARING month WITH previous
+COMPARING previous WITH day
+---CALCULATING SUPER NODES---
+[[], ['pdays', 'campaign', 'duration', 'housing'], ['marital'], ['poutcome', 'job'], ['age'], ['education'], ['default'], ['loan', 'contact'], ['month']]

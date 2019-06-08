@@ -1,0 +1,24 @@
+------Let's resume your input data:------
+1. Your datas are in :
+./file/loan_payment/input.csv
+2. The field that you want to analize is:
+result
+3. The value for the field result that you want to use as a root of the analysis is:
+<=50K
+4. The other value that you want to use to compare result is:
+>50K
+------------
+---BEFORE USING CE_COEFFICIENT---
+result: <=50K--->hours-per-week: 40--->native-country: United-States--->education: HS-grad--->workclass: Private--->race: White--->occupation: Craft-repair--->marital-status: Married-civ-spouse--->relationship: Husband--->sex: Male
+---AFTER USING CE_COEFFICIENT---
+result: <=50K, ce_coefficient: 0.47007597976--->hours-per-week: 40, ce_coefficient: 0.47007597976--->education: HS-grad, ce_coefficient: 0.244934500935--->native-country: United-States, ce_coefficient: 0.234743098867--->workclass: Private, ce_coefficient: 0.116419192502--->race: White, ce_coefficient: 0.0418976602892--->occupation: Craft-repair, ce_coefficient: 0.0157877201894--->sex: Male, ce_coefficient: 0.00125275977487--->marital-status: Married-civ-spouse, ce_coefficient: 0.000662639153221--->relationship: Husband, ce_coefficient: 0.000595408933666
+COMPARING hours-per-week WITH education
+COMPARING education WITH native-country
+COMPARING native-country WITH workclass
+COMPARING workclass WITH race
+COMPARING race WITH occupation
+COMPARING occupation WITH sex
+COMPARING sex WITH marital-status
+COMPARING marital-status WITH relationship
+---CALCULATING SUPER NODES---
+[[], ['education'], ['native-country', 'workclass', 'race', 'occupation', 'sex'], ['marital-status']]

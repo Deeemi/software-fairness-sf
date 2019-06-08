@@ -2,7 +2,12 @@ import csv
 import pandas as pd
 import numpy as numpy
 import requests
+import sys
 from operator import itemgetter
+import scipy.stats as stats
+import warnings
+
+warnings.filterwarnings("ignore")
 
 pd.options.mode.chained_assignment = None
 
@@ -101,21 +106,53 @@ def find_dependencies(df, first_field, fields, value):
     '''return find_dependencies(df.drop(field, axis=1, inplace = True), return_value["field2"], fields)'''
 
 
-inputCsv = "./file/german.csv"
-fields = column_reader("./file/german_heading.txt")
-print (fields)
+def create_super_node(dag):
+    node_cluster = []
+    new_super_node = []
+    iterator = len(dag)
+    i = 0
+    while i<iterator-1:
+        print("COMPARING " + dag[i]["field2"] + " WITH " + dag[i+1]["field2"])
+        if dag[i]["ce_coefficient"]/dag[i+1]["ce_coefficient"]<2:
+            node_cluster.append(new_super_node)
+            new_super_node = []
+            new_super_node.append(dag[i+1]["field2"])
+        else:
+            new_super_node.append(dag[i+1]["field2"])
+        i = i+1
+    return node_cluster
+            
+inputFile = sys.argv[1]
+inputField = sys.argv[2]
+inputValue = sys.argv[3]
+inputCompareValue = sys.argv[4]
+print("------Let's resume your input data:------")
+print("1. Your datas are in :")
+print ("./file/" + inputFile+ "/input.csv")
+print("2. The field that you want to analize is:")
+print(inputField)
+print("3. The value for the field "+ inputField+ " that you want to use as a root of the analysis is:")
+print(inputValue)
+print("4. The other value that you want to use to compare "+ inputField+ " is:")
+print(inputCompareValue)
+print("------------")
+inputCsv = "./file/" + inputFile+ "/input.csv"
+'''inputCsv = "./file/bank-full.csv"'''
+fields = column_reader("./file/" + inputFile+ "/heading.txt")
+
 df = pd.read_csv(inputCsv, skipinitialspace=True, usecols=fields)
 dag = []
 current_field = ""
-df_in = df.loc[df['result'] == 'bad'] 
-'''DA RIMETTERE <=50K'''
-node = find_dependencies(df_in, 'result', fields, 'bad') 
-'''DA RIMETTERE<=50K'''
+if(inputValue == '0' or inputValue == '1'):
+    inputValue = numpy.int64(inputValue)
+    inputCompareValue = numpy.int64(inputCompareValue)
+df_in = df.loc[df[inputField] == inputValue] 
+node = find_dependencies(df_in, inputField, fields, inputValue) 
 dag.append(node)
-df_in.drop('result', axis=1, inplace = True)
+df_in.drop(inputField, axis=1, inplace = True)
 current_field = node["field2"]
 value = node["value2"]
-fields.remove('result')
+fields.remove(inputField)
 df_in = df_in.loc[df_in[node["field2"]] == node["value2"]]
 
 i = len(fields)
@@ -123,12 +160,13 @@ i = len(fields)
 while i>=2:
     node = find_dependencies(df_in, current_field, fields, value)
     dag.append(node)
-    df_in.drop(node["field1"], axis=1, inplace = True)
-    df_in = df_in.loc[df_in[node["field2"]] == node["value2"]]
-    current_field = node["field2"]
-    value = node["value2"]
-    fields.remove(node["field1"])
-    i = i-1
+    if(len(node) > 0):
+        df_in.drop(node["field1"], axis=1, inplace = True)
+        df_in = df_in.loc[df_in[node["field2"]] == node["value2"]]
+        current_field = node["field2"]
+        value = node["value2"]
+        fields.remove(node["field1"])
+        i = i-1
 
     if(bool(node) == False):
         break
@@ -136,9 +174,11 @@ new_count = 0
 
 for j in dag:
     new_count = j["count"]/len(df[j["field2"]].unique())/len(df.index)
-    conditional_prob = df.groupby(["result"])[j["field2"]].value_counts() / df.groupby(["result"])[j["field2"]].count()
+    '''conditional_prob = df.groupby(j["field2"])["result"].value_counts() / df.groupby(j["field2"])["result"].count()'''
+    conditional_prob = df.groupby([inputField])[j["field2"]].value_counts() / df.groupby([inputField])[j["field2"]].count()
     j["count"] = new_count
-    j["odds-ratio"] = (conditional_prob.loc["bad"][j["value2"]]/(1- conditional_prob.loc["bad"][j["value2"]]))/(conditional_prob.loc["good"][j["value2"]]/(1- conditional_prob.loc["good"][j["value2"]]))
+    '''j["odds-ratio"] = (conditional_prob.loc[j["value2"]]["<=50K"]/(1- conditional_prob.loc[j["value2"]]["<=50K"]))/(conditional_prob.loc[j["value2"]][">50K"]/(1- conditional_prob.loc[j["value2"]][">50K"]))'''
+    j["odds-ratio"] = (conditional_prob.loc[inputValue][j["value2"]]/(1- conditional_prob.loc[inputValue][j["value2"]]))/(conditional_prob.loc[inputCompareValue][j["value2"]]/(1- conditional_prob.loc[inputCompareValue][j["value2"]]))
 
 first = True
 result_string = ""
@@ -148,12 +188,11 @@ for x in dag:
 print("---BEFORE USING CE_COEFFICIENT---")
 for c in dag:
     if first == True:
-        result_string = c["field1"]+": "+ str(c["value1"])
+        result_string = c["field1"]+": "+ str(c["value1"]) +"--->"+c["field2"]+": "+ str(c["value2"])
         first = False
     else:
-        result_string = result_string + "--->" + c["field1"]+": "+ str(c["value1"])
+        result_string = result_string + "--->" + c["field2"]+": "+ str(c["value2"])
         last = c 
-
 
 print(result_string)
 
@@ -164,35 +203,15 @@ dag = new_dag
 
 for c in dag:
     if first == True:
-        result_string = c["field1"]+": "+ str(c["value1"]) +", ce_coefficient: " +str(c["ce_coefficient"])
+        result_string = c["field1"]+": "+ str(c["value1"]) +", ce_coefficient: " +str(c["ce_coefficient"])+"--->"+c["field2"]+": "+ str(c["value2"]) +", ce_coefficient: " +str(c["ce_coefficient"])
         first = False
     else:
-        result_string = result_string + "--->" + c["field1"]+": "+ str(c["value1"]) +", ce_coefficient: "+str(c["ce_coefficient"])
-        last = c 
+        result_string = result_string + "--->" + c["field2"]+": "+ str(c["value2"]) +", ce_coefficient: "+str(c["ce_coefficient"])
+        last = c
+
 
 print("---AFTER USING CE_COEFFICIENT---")
 print(result_string)
-
-
-'''NEXT LINES ARE WORK IN PROGRESS
-fields = column_reader('./file/inputHeading.txt')
-correlation_datas = pd.read_csv('./file/input_long.csv', skipinitialspace=True, usecols=fields)
-
-print("Start analizing the dataset...")
-
-print('-----PEARSON-----')
-pearson_correlation = correlation_datas.corr('pearson')
-for i in pearson_correlation:
-    max = -1
-    print("-----")
-    tmp = pearson_correlation[i]
-    for j in pearson_correlation[i]:
-        if(j == 1):
-            j = 0
-            tmp[i] = 0
-        if (j>max):
-            max_row = str(tmp[i])
-            max = j
-    print(tmp)
-    print("-----")
-    print(max_row)'''
+super_node_dag = create_super_node(new_dag)
+print("---CALCULATING SUPER NODES---")
+print(super_node_dag)
